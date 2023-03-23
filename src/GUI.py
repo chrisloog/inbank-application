@@ -10,14 +10,25 @@ root.configure(background="#F8F8F8")
 
 
 def submit():
-    personal_code = int(personal_code_entry.get())
-    loan_amount = int(loan_amount_entry.get())
-    loan_period = int(loan_period_entry.get())
+    personal_code = personal_code_entry.get()
+    loan_amount = loan_amount_entry.get()
+    loan_period = loan_period_entry.get()
 
-    decision_field.config(state="normal")
-    decision_field.delete("1.0", "end")
-    decision_field.insert("end", loan_decision_engine.decision_engine(personal_code, loan_amount, loan_period))
-    decision_field.config(state="disabled")
+    # Check if personal code, loan amount, and loan period are numeric
+    if not personal_code.isnumeric() or not loan_amount.isnumeric() or not loan_period.isnumeric():
+        decision_field.config(state="normal")
+        decision_field.delete("1.0", "end")
+        decision_field.insert("end", "Error: Personal code, loan amount, and loan period must be numeric")
+        decision_field.config(state="disabled")
+    else:
+        personal_code = int(personal_code)
+        loan_amount = int(loan_amount)
+        loan_period = int(loan_period)
+
+        decision_field.config(state="normal")
+        decision_field.delete("1.0", "end")
+        decision_field.insert("end", loan_decision_engine.decision_engine(personal_code, loan_amount, loan_period))
+        decision_field.config(state="disabled")
 
 
 personal_code_label = ttk.Label(root, text="Personal code:")
